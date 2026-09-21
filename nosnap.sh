@@ -43,24 +43,25 @@ snap list
 
 # 1. 先检查 snap 是否作为手动安装的软件包
 apt-mark showmanual | grep -E '^snapd$|snap' # 预期输出空
-# 检查已经apt安装的包里，哪些真正依赖 snapd. 如果去掉 --installe 参数, 则会输出可以可能依赖的软件包
+# 检查已经apt安装的包里，哪些真正依赖 snapd. 如果去掉 --installed 参数, 则会输出可以可能依赖的软件包. rdepends 的意思是输出依赖snapd的，而不是snapd依赖的
 apt-cache rdepends --installed snapd
 # 预期输出:
     # snapd
     # Reverse Depends:
-    #   ubuntu-desktop-minimal
-    #   firefox
-    #   libsnapd-glib-2-1
-    #   apparmor
-    #   command-not-found
-# 该输出说明真正依赖 snapd 的只有 snapd。出现在 reverse depends列表里的包，说明它们 TODO
+    #   ubuntu-desktop-minimal                  --> Ubuntu 最小桌面元包. ubuntu规定该元包依赖snapd，但能正常处理snapd被purge
+    #   firefox                                 --> 空壳包，引导包, 引导apt install firefox触发脚本去下载snap版本. 这种可恶的混乱行为坚定了我们卸载snap的决心
+    #   libsnapd-glib-2-1                       --> Snap通信库, 非snap的图形程序与snapd通信时的翻译官. 
+    #   apparmor                                --> 安全模块, Linux 内核级别的安全沙盒机制, 包含了一些专门用于管理 Snap 安全策略的辅助脚本和配置文件
+    #   command-not-found                       --> 当找不到命令时，为了给出建议，除了去apt源查找，还会去snap商店查找
+
+# --> 该输出说明真正依赖snapd的只有snapd和firefox。其他包对snapd的依赖只是为了snapd自身，所以若snapd被purge，这些包仍然可以继续存在，只不过服务snapd的部分没了意义
 
 # 2. 模拟卸载 snapd
 sudo apt -s purge snapd # -s 是simulate，模拟卸载
 # 预期输出:
     # 将要卸载:
     #   firefox snapd
-# --> 这里将要卸载的只有 snapd 和 firefox(firefox已经被卸载了，这里只是apt识别出的一个引导包, 负责把apt firefox引导到snap，这种可恶的混乱行为坚定了我们卸载snap的决心)
+# --> 可以看出，apt正确处理了上述package对snapd的依赖。这里将要卸载的只有 snapd 和 firefox，其他包继续存在。
 # 可能输出
     # 不再需要
     #   linux-<components>-<old_version>
