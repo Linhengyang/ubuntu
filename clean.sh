@@ -35,6 +35,10 @@ dpkg -l | grep -E 'linux-(image|modules|headers)' | grep '<linux大版本号, �
 sudo apt autoremove --purge -y
 
 
+# 可选：删除 rc状态下的 残留包（仅剩配置文件）
+sudo dpkg --purge $(dpkg -l | awk '/^rc/ {print $2}')
+
+
 # 5. 确认无需升级
 sudo apt pdate
 apt list --upgradable # 预期输出为空

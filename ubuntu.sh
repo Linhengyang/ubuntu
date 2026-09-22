@@ -84,4 +84,4 @@ sudo apt install git build-essential cmake ninja-build pkg-config
 # 安装 docker 详见 docker.sh
 
 
-# 安装 nvidia driver。
+# 安装/更新 nvidia driver 详见 nvidia.sh

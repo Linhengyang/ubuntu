@@ -72,6 +72,9 @@ dpkg -l | grep -E '^rc.*nvidia' # 检查所有只留下残留配置的nvidia包�
 # 5. 清理不需要的依赖
 sudo apt autoremove --purge -y
 
+# 清理 rc状态下的包
+sudo dpkg --purge $(dpkg -l | awk '/^rc/ {print $2}')
+
 # 注意事项：
 #   不要去掉open，保持open。-open是NVIDIA oepn kernel module路线，与普通版不一样。不要同时大版本升级+driver类型切换
 #   cuda toolkit不会自动升级。
