@@ -46,6 +46,18 @@ sudo apt upgrade
 
 
 # 重装 nvidia驱动（大版本更新，不同名：nvidia-driver 595 -> nvidia-driver 610）的方法
+# 0. 用 ubuntu-drivers 命令查看ubuntu给出的driver可安装版本列表，以及位列其中的推荐版本
+ubuntu-drivers devices
+# 预期输出：会看到 recommended 版本
+
+ubuntu-driver list
+# 所有可用 driver版本
+
+# 选择 recommended 的新大版本执行升级。注意：
+#   包名中不要去掉open。-open是NVIDIA oepn kernel module路线，与普通版不一样。不要同时大版本升级+driver类型切换
+#   cuda toolkit不会自动升级
+#   可能可以这样执行大版本升级：sudo ubuntu-drivers autoinstall
+
 # 1. 确认新的大版本(以610为例子)驱动已经在 ubuntu apt源的 candidate中
 apt-cache policy nvidia-driver-610-open
 
@@ -75,16 +87,6 @@ sudo apt autoremove --purge -y
 # 清理 rc状态下的包
 sudo dpkg --purge $(dpkg -l | awk '/^rc/ {print $2}')
 
-# 注意事项：
-#   不要去掉open，保持open。-open是NVIDIA oepn kernel module路线，与普通版不一样。不要同时大版本升级+driver类型切换
-#   cuda toolkit不会自动升级。
-#   尽量只在 ubuntu官方推荐版本之间升级
-# 用 ubuntu-drivers 命令查看ubuntu给出的driver推荐、和可安装driver版本
-ubuntu-drivers devices
-# 预期输出：会看到 recommended 版本
-
-ubuntu-driver list
-# 所有可用 driver版本
-
-sudo ubuntu-drivers autoinstall
-# 可能也是一种大版本升级的方式
+# 再次检查是否清理干净
+dpkg -l | grep -E 'nvidia.*<old_version>' # 检查所有 旧版本 nvidia驱动包 是否都清除干净了。如果没有，继续执行
+sudo dpkg --purge <nvidia_packge_name_old_version>

@@ -41,7 +41,7 @@ sudo dpkg --purge <cuda-repo-<dist>-X-Y-local>
 sudo dpkg --purge <cudnn-local-repo-<dist>-X-Y>
 
 # 最后，不要忘了把 ~/.bashrc 里添加的 环境变量 去掉
-sudo nano ~/.bashrc
+sudo nano ~/.bashrc # 去掉 PATH 和 LD_BINARY_PATH 两个环境变量
 
 
 # --> 彻底删除了 旧版本 cuda-toolkit。可以开始新版本 cuda-toolkit 安装了。
