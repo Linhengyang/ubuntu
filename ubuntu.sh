@@ -10,14 +10,11 @@ cat /etc/apt/sources.list.d/ubuntu.sources
 # 镜像 apt源: http://cn.archive.ubuntu.com/ubuntu/
 # 镜像实质会指向: http://mirros.tuna.tsinghua.edu.cn/ubuntu/
 
-# 如果网络受限，要么将 apt源改成镜像源，要么安装 clash verge 以代理上网，并给 apt命令注入环境变量，详见 clash-verge.sh
+# 如果网络受限，要么将 apt源改成镜像源:
 # 修改 apt源的方法是：
-sudo nano /etc/apt/sources.list.d/ubuntu.sources
-# CTRL + O 写入，CTRL + X 退出
-
-
-
-# 安装 clash verge 以代理上网，详见 clashverge.sh
+sudo nano /etc/apt/sources.list.d/ubuntu.sources # CTRL + O 写入，CTRL + X 退出
+# 要么安装 clash verge 以代理上网，并给 apt命令注入环境变量
+# 详见 clash-verge.sh
 
 
 # apt更新包
