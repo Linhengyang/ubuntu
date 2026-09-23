@@ -19,6 +19,9 @@ which clash-verge
 sudo apt remove clash-verge # 删除程序, 保留配置
 sudo apt purge clash-verge # 删除程序+系统级配置
 
+# 清除 订阅、日志等配置文件
+rm -rf ~/.local/share/io.github.clash-verge-rev.clash-verge-rev
+
 # 清理不再需要的依赖
 sudo apt autoremove
 

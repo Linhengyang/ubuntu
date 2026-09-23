@@ -15,7 +15,7 @@ sudo apt autoremove --dry-run
 
 # 3. 与当前内核版本对比，确认都是旧版本
 uname -r # 预期输出: 新版本
-dpkg -l | grep -E 'linux-(image|modules|headers)' | grep '<linux大版本号, 比如7.0.0>'
+dpkg -l | grep -E 'linux.*(image|modules|headers)' | grep '<linux大版本号, 比如7.0.0>'
 # 预期输出:
     #   ii  linux-headers-<new_version>
     #   ii  linux-image-unsigned-<new_version>-generic
@@ -36,10 +36,12 @@ sudo apt autoremove --purge -y
 
 
 # 可选：删除 rc状态下的 残留包（仅剩配置文件）
-sudo dpkg --purge $(dpkg -l | awk '/^rc/ {print $2}')
+sudo apt -s purge linux-<component>-<old_version>-generic # 模拟清除，看看将要卸载里是不是只有它一个
+# 如果确实是只有该包一个，那么可以执行：
+sudo apt purge linux-<component>-<old_version>-generic
 
 
 # 5. 确认无需升级
-sudo apt pdate
+sudo apt update
 apt list --upgradable # 预期输出为空
 
